@@ -5,3 +5,12 @@
 *.zip
 *.bak
 .env
+# Secretos
+.env
+
+# Salida de los scripts (backups cifrados, informes, logs)
+salida/
+
+# Python
+__pycache__/
+*.pyc

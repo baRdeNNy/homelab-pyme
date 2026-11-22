@@ -1,6 +1,6 @@
 # Fase 1 — Hipervisor Proxmox VE
 
-Proxmox VE 9.2.2 es la base del lab: aloja todas las VMs (FortiGate, controlador de dominio y servidor de la DMZ) y define las tres redes de la pyme simulada.
+Proxmox VE 9.2 (ISO 9.2.2, actualizado a 9.2.32) es la base del lab: aloja todas las VMs (FortiGate, controlador de dominio y servidor de la DMZ) y define las tres redes de la pyme simulada.
 
 ### Entorno
 

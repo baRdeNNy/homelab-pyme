@@ -39,25 +39,37 @@ Laboratorio que simula la infraestructura de una pyme: firewall perimetral con *
 | 2 | Firewall perimetral FortiGate-VM | ✅ | [docs/02-fortigate.md](docs/02-fortigate.md) |
 | 3 | Controlador de dominio Windows Server 2025 | ✅ | [docs/03-controlador-dominio.md](docs/03-controlador-dominio.md) |
 | 4 | Servidor Ubuntu 26.04 con Docker en la DMZ | ✅ | [docs/04-dmz-docker.md](docs/04-dmz-docker.md) |
-| 5 | Automatización con las APIs de FortiGate y Proxmox | ⏳ | — |
+| 5 | Automatización con las APIs de FortiGate y Proxmox | ✅ | [docs/05-automatizacion.md](docs/05-automatizacion.md) |
 | 6 | Backup y restauración con Acronis Cyber Protect | ⏳ | — |
+
+## Automatización
+
+[`scripts/05-automatizacion.py`](scripts/05-automatizacion.py) se ejecuta cada día con el Programador de tareas y hace dos cosas:
+
+- **Backup cifrado de la configuración del FortiGate** por la API REST de FortiOS, conservando los últimos 14.
+- **Informe de estado de Proxmox** en Markdown: nodo, VMs (CPU, RAM, disco, uptime y snapshots) y almacenamiento.
+
+Cada API usa un token de mínimo privilegio: usuario REST API limitado a una IP en el FortiGate y rol de solo lectura `PVEAuditor` en Proxmox. Los secretos van en un `.env` que no se sube al repo (plantilla en [`.env.example`](.env.example)). El script solo usa la librería estándar de Python.
 
 ## Hardware
 
 - **Host:** Windows 11, Ryzen 7 7700, 32 GB RAM, HDD 4 TB, red por cable 2.5GbE.
-- **Proxmox:** VM con virtualización anidada (8 vCPU, 20 GB RAM, 300 GB).
+- **Proxmox:** VE 9.2.32, en una VM con virtualización anidada (8 vCPU, 20 GB RAM, 300 GB).
 
 ## Estructura del repositorio
 
 ```
 homelab-pyme/
 ├── README.md        ← este archivo
+├── .env.example     ← plantilla de configuración de los scripts (sin secretos)
 ├── docs/            ← una guía por fase
 │   └── img/         ← capturas (NN-descripcion.png, NN = número de fase)
 ├── diagrams/        ← diagramas de red
 ├── scripts/         ← automatizaciones (Python / PowerShell / Bash)
 └── configs/         ← configuraciones exportadas, sin contraseñas
 ```
+
+`.env` (secretos) y `salida/` (backups, informes y logs generados por los scripts) están excluidos con `.gitignore`.
 
 ## Autor
 
