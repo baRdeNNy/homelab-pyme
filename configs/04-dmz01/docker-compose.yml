@@ -53,6 +53,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Madrid
+    # Para monitorizar la web por el camino publicado (host -> puerto 443 -> proxy)
+    extra_hosts:
+      - "www.pyme.test:host-gateway"
     volumes:
       - kuma-data:/app/data
     networks:
