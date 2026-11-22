@@ -35,7 +35,7 @@ Laboratorio que simula la infraestructura de una pyme: firewall perimetral con *
 | # | Fase | Estado | Guía |
 |---|---|---|---|
 | 1 | Hipervisor Proxmox VE y redes virtuales | ✅ | [docs/01-proxmox.md](docs/01-proxmox.md) |
-| 2 | Firewall perimetral FortiGate-VM | ✅ | _próximamente_ |
+| 2 | Firewall perimetral FortiGate-VM | ✅ | [docs/02-fortigate.md](docs/02-fortigate.md) |
 | 3 | Controlador de dominio Windows Server 2025 | ⏳ | — |
 | 4 | Servidor Ubuntu con Docker en la DMZ | ⏳ | — |
 | 5 | Automatización con las APIs de FortiGate y Proxmox | ⏳ | — |
