@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PYME Lab S.L.</title>
+  <style>
+    :root { --azul: #1f4e79; --gris: #f3f5f8; --texto: #222; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--texto); background: var(--gris); }
+    header { background: var(--azul); color: #fff; padding: 2.5rem 1.5rem; }
+    header h1 { margin: 0 0 .4rem; font-size: 2rem; }
+    header p { margin: 0; opacity: .85; }
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { background: #fff; border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .card h2 { margin-top: 0; font-size: 1.1rem; color: var(--azul); }
+    footer { text-align: center; font-size: .85rem; color: #666; padding: 2rem 1rem; }
+    code { background: #eef1f5; padding: .1rem .35rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PYME Lab S.L.</h1>
+    <p>Distribución y servicios para empresas de las Terres de l'Ebre</p>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Quiénes somos</h2>
+      <p>Empresa ficticia del proyecto <strong>homelab-pyme</strong>, que simula la infraestructura de una pyme.</p>
+    </section>
+    <section class="card">
+      <h2>Servicios</h2>
+      <p>Web corporativa y página de estado de servicios, publicadas en la DMZ a través del FortiGate.</p>
+    </section>
+    <section class="card">
+      <h2>Contacto</h2>
+      <p>info@pyme.test</p>
+    </section>
+  </main>
+  <footer>
+    Servido por <code>web</code> (nginx) detrás del proxy inverso en <code>dmz01</code> · DMZ 10.10.20.0/24
+  </footer>
+</body>
+</html>

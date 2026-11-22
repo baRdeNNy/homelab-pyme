@@ -1,0 +1,67 @@
+# homelab-pyme - Fase 4: servicios de la DMZ (dmz01, 10.10.20.10)
+# Publicado por el FortiGate con la VIP VIP-DMZ-SRV (192.168.1.210 -> 10.10.20.10).
+#
+# Solo el proxy publica puertos (80/443). Docker se salta UFW con los puertos
+# publicados, así que ningún otro contenedor publica nada.
+#
+# Redes:
+#   frontend -> bridge normal (con salida a Internet): proxy y estado
+#   interno  -> internal: true (sin salida a Internet): proxy y web
+#
+# Antes de levantarlo: ../../scripts/04-gen-cert.sh  (crea nginx/certs/, no se sube al repo)
+# Uso: docker compose up -d
+
+name: pyme-dmz
+
+services:
+  proxy:
+    image: nginx:stable-alpine
+    container_name: proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    networks:
+      - frontend
+      - interno
+    depends_on:
+      web:
+        condition: service_healthy
+      estado:
+        condition: service_started
+
+  web:
+    image: nginx:stable-alpine
+    container_name: web
+    restart: unless-stopped
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+    networks:
+      - interno
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  estado:
+    image: louislam/uptime-kuma:2-slim
+    container_name: estado
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Madrid
+    volumes:
+      - kuma-data:/app/data
+    networks:
+      - frontend
+
+networks:
+  frontend:
+  interno:
+    internal: true
+
+volumes:
+  kuma-data:

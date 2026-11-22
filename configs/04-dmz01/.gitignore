@@ -1,0 +1,2 @@
+# Certificado y clave privada: se generan en el servidor con scripts/04-gen-cert.sh
+nginx/certs/
