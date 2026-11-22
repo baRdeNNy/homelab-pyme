@@ -1,0 +1,19 @@
+# homelab-pyme - Fase 4: red de dmz01 (copia de /etc/netplan/*.yaml, generado por el instalador)
+# Solo como referencia: no se despliega desde el repo.
+network:
+  ethernets:
+    ens18:
+      addresses:
+      - 10.10.20.10/24
+      match:
+        macaddress: bc:24:11:93:06:6a
+      nameservers:
+        addresses:
+        - 8.8.8.8
+        - 9.9.9.9
+        search: []
+      routes:
+      - to: default
+        via: 10.10.20.1
+      set-name: ens18
+  version: 2

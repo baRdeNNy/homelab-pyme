@@ -164,9 +164,13 @@ end
 | # | Nombre | Origen → Destino | Servicios | NAT |
 |---|---|---|---|---|
 | 1 | LAN-a-Internet | LAN → WAN | ALL | Sí |
-| 2 | DMZ-a-Internet | DMZ → WAN | HTTP, HTTPS, DNS, NTP, PING | Sí |
+| 2 | DMZ-a-Internet | DMZ → WAN, **todo excepto Red-Casa** ¹ | HTTP, HTTPS, DNS, NTP, PING | Sí |
 | 3 | Casa-a-DMZ-publicado | WAN (Red-Casa) → VIP-DMZ-SRV | HTTP, HTTPS, SSH | No |
 | 0 | Implicit Deny | todo | todo | — |
+
+¹ Cambiado en la Fase 4. Al principio el destino era `all`, pero port1 es la red de casa, así que la DMZ podía llegar por HTTP/HTTPS a cualquier equipo de 192.168.1.0/24. Se corrigió negando el destino `Red-Casa` (`dstaddr-negate`), sin gastar otra política. Ver [docs/04-dmz-docker.md](04-dmz-docker.md#15-corrección-de-la-política-2).
+
+Configuración actual:
 
 ```
 config firewall policy
@@ -187,7 +191,8 @@ config firewall policy
         set srcintf "port3"
         set dstintf "port1"
         set srcaddr "all"
-        set dstaddr "all"
+        set dstaddr "Red-Casa"
+        set dstaddr-negate enable
         set action accept
         set schedule "always"
         set service "HTTP" "HTTPS" "DNS" "NTP" "PING"
@@ -209,9 +214,11 @@ end
 ```
 
 ![Política 1](img/02-cli-politica-1.png)
-![Política 2](img/02-cli-politica-2.png)
+![Política 2 (configuración original, con destino all)](img/02-cli-politica-2.png)
 ![Política 3](img/02-cli-politica-3.png)
 ![Las 3 políticas en la GUI](img/02-politicas.png)
+
+Las capturas de la política 2 y de la GUI muestran la configuración original de esta fase. El cambio de destino está documentado, con sus capturas, en la Fase 4.
 
 Todas las políticas registran el tráfico (`logtraffic all`). Además, se activa el log de la denegación implícita para ver lo que se bloquea:
 
@@ -239,7 +246,7 @@ Snapshot de Proxmox `fase2-ok` con la fase terminada:
 - **Límite de la licencia (3 políticas, 3 interfaces, 3 rutas):** el diseño cabe exactamente en el límite. Al crear la tercera política, la GUI desactiva el botón *Create new*.
 - **Snapshots antes y después:** `licencia-ok` protege la licencia, que no se puede repetir, y `fase2-ok` permite volver a una configuración que se sabe que funciona.
 - **DMZ aislada de la LAN:** no hay ninguna política entre LAN y DMZ. Si el servidor de la DMZ quedara comprometido, no tendría camino hacia el controlador de dominio.
-- **Mínimo privilegio en la DMZ:** el servidor solo puede salir a Internet con los servicios que necesita (actualizaciones, imágenes de Docker, DNS y NTP).
+- **Mínimo privilegio en la DMZ:** el servidor solo puede salir a Internet con los servicios que necesita (actualizaciones, imágenes de Docker, DNS y NTP). Desde la Fase 4, tampoco puede llegar a la red de casa (destino negado `Red-Casa`).
 - **Publicación con VIP:** el servidor de la DMZ se expone con una IP de la red "externa" mediante DNAT, igual que se publicaría un servicio en una IP pública. El acceso está limitado a la red de origen `Red-Casa`.
 - **Log de la denegación implícita:** sin él, el tráfico bloqueado no deja rastro y los diagnósticos se complican.
 - **Sin DHCP en el FortiGate para la LAN:** lo da el controlador de dominio de Windows Server, como en una pyme típica.
@@ -250,6 +257,6 @@ Snapshot de Proxmox `fase2-ok` con la fase terminada:
 - `execute ping 8.8.8.8` desde el FortiGate: correcto.
 - GUI accesible en `https://192.168.1.201`, con la licencia FGVMEV activa (1/1 vCPU y 2/2 GB).
 - Las 3 políticas y la VIP están creadas.
-- `ping 192.168.1.210` desde Proxmox no responde todavía: el servidor 10.10.20.10 no existe hasta la Fase 4, y la política 3 no incluye PING. La publicación se validará entonces con HTTP/SSH.
+- `ping 192.168.1.210` desde Proxmox no responde todavía: el servidor 10.10.20.10 no existe hasta la Fase 4, y la política 3 no incluye PING. La publicación se valida en la Fase 4 con HTTP, HTTPS y SSH.
 
 ![Ping a la VIP sin servidor detrás](img/02-ping-vip.png)
