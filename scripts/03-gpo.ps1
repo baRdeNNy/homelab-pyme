@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Políticas de grupo y recurso compartido de la pyme simulada (homelab-pyme, Fase 3).
 

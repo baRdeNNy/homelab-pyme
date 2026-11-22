@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Crea la estructura de Active Directory de la pyme simulada (homelab-pyme, Fase 3).
 
