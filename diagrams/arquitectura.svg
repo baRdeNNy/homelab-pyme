@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 935" width="1200" height="935" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>homelab-pyme: arquitectura de red</title>
+  <defs>
+    <marker id="aBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/>
+    </marker>
+    <marker id="aApi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="aVip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="935" fill="#ffffff"/>
+
+  <!-- Internet y Acronis Cloud -->
+  <rect x="480" y="20" width="240" height="50" rx="25" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="600" y="51" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Internet</text>
+
+  <rect x="860" y="16" width="300" height="62" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="1010" y="42" text-anchor="middle" font-size="16" font-weight="600" fill="#0f172a">Acronis Cloud</text>
+  <text x="1010" y="63" text-anchor="middle" font-size="13" fill="#334155">Copia 2: réplica cifrada e inmutable</text>
+  <line x1="720" y1="45" x2="860" y2="45" stroke="#64748b" stroke-width="1.5"/>
+
+  <!-- Router -->
+  <line x1="600" y1="70" x2="600" y2="110" stroke="#2563eb" stroke-width="3"/>
+  <rect x="480" y="110" width="240" height="56" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="600" y="134" text-anchor="middle" font-size="16" font-weight="600" fill="#0f172a">Router de casa</text>
+  <text x="600" y="155" text-anchor="middle" font-size="14" fill="#334155">192.168.1.1</text>
+  <line x1="600" y1="166" x2="600" y2="210" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- Red de casa -->
+  <line x1="60" y1="210" x2="1140" y2="210" stroke="#2563eb" stroke-width="4"/>
+  <text x="60" y="198" font-size="14" font-weight="600" fill="#1d4ed8">Red de casa = WAN del lab · 192.168.1.0/24</text>
+
+  <!-- PC host -->
+  <line x1="225" y1="210" x2="225" y2="250" stroke="#2563eb" stroke-width="3"/>
+  <rect x="60" y="250" width="330" height="168" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5"/>
+  <text x="80" y="278" font-size="16" font-weight="600" fill="#0f172a">PC host · Windows 11</text>
+  <text x="80" y="300" font-size="14" fill="#334155">192.168.1.133</text>
+  <text x="80" y="328" font-size="13" fill="#334155">• VMware Workstation: Proxmox anidado</text>
+  <text x="80" y="350" font-size="13" fill="#334155">• Script diario (Fase 5): backup cifrado</text>
+  <text x="92" y="368" font-size="13" fill="#334155">del FortiGate + informe de Proxmox</text>
+  <text x="80" y="390" font-size="13" fill="#334155">• \\AcronisBackups$ en F:\</text>
+  <text x="92" y="408" font-size="13" fill="#334155">copia 1 de los backups (disco aparte)</text>
+
+  <!-- Proxmox -->
+  <line x1="1060" y1="210" x2="1060" y2="250" stroke="#2563eb" stroke-width="3"/>
+  <rect x="430" y="250" width="710" height="660" rx="14" fill="#fafafa" stroke="#334155" stroke-width="2"/>
+  <text x="455" y="280" font-size="17" font-weight="700" fill="#0f172a">Proxmox VE 9.2 · pve · 192.168.1.200</text>
+  <text x="455" y="302" font-size="13" fill="#475569">Agent for Proxmox VE (Acronis): backup sin agente dentro de las VMs</text>
+
+  <!-- vmbr0 -->
+  <line x1="460" y1="335" x2="1110" y2="335" stroke="#2563eb" stroke-width="4"/>
+  <text x="460" y="325" font-size="13" font-weight="600" fill="#1d4ed8">vmbr0 (WAN)</text>
+  <line x1="1060" y1="250" x2="1060" y2="335" stroke="#2563eb" stroke-width="3"/>
+  <text x="1068" y="270" font-size="12" fill="#1d4ed8">nic0</text>
+
+  <!-- FortiGate -->
+  <line x1="785" y1="335" x2="785" y2="380" stroke="#2563eb" stroke-width="3"/>
+  <text x="795" y="364" font-size="13" fill="#1d4ed8">port1 · 192.168.1.201</text>
+  <rect x="590" y="380" width="390" height="112" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="785" y="406" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">FortiGate-VM · FortiOS 8.0.2 (VM 100)</text>
+  <text x="785" y="430" text-anchor="middle" font-size="13" fill="#334155">Router, NAT y firewall · 3 políticas</text>
+  <text x="785" y="452" text-anchor="middle" font-size="13" fill="#334155">VIP 192.168.1.210 → 10.10.20.10 (HTTP, HTTPS, SSH)</text>
+  <text x="785" y="474" text-anchor="middle" font-size="13" font-weight="600" fill="#b91c1c">Sin política entre LAN y DMZ</text>
+
+  <!-- LAN -->
+  <line x1="680" y1="492" x2="680" y2="560" stroke="#16a34a" stroke-width="3"/>
+  <text x="672" y="530" text-anchor="end" font-size="13" fill="#15803d">port2 · 10.10.10.1</text>
+  <line x1="460" y1="560" x2="770" y2="560" stroke="#16a34a" stroke-width="4"/>
+  <text x="460" y="550" font-size="13" font-weight="600" fill="#15803d">vmbr1 (LAN) · 10.10.10.0/24</text>
+
+  <line x1="470" y1="560" x2="470" y2="815" stroke="#16a34a" stroke-width="3"/>
+  <line x1="470" y1="660" x2="490" y2="660" stroke="#16a34a" stroke-width="3"/>
+  <rect x="490" y="600" width="270" height="120" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="508" y="626" font-size="15" font-weight="700" fill="#0f172a">DC01 · VM 101</text>
+  <text x="508" y="648" font-size="13" fill="#334155">Windows Server 2025 · 10.10.10.10</text>
+  <text x="508" y="670" font-size="13" fill="#334155">AD DS, DNS, DHCP y GPO</text>
+  <text x="508" y="692" font-size="13" fill="#334155">Carpeta compartida \\DC01\Datos</text>
+  <text x="508" y="710" font-size="12" fill="#64748b">pyme.internal</text>
+
+  <line x1="470" y1="815" x2="490" y2="815" stroke="#16a34a" stroke-width="3"/>
+  <rect x="490" y="770" width="270" height="90" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="508" y="796" font-size="15" font-weight="700" fill="#0f172a">PC01 · VM 102</text>
+  <text x="508" y="818" font-size="13" fill="#334155">Windows 11 · DHCP (10.10.10.100)</text>
+  <text x="508" y="840" font-size="13" fill="#334155">Puesto unido al dominio</text>
+
+  <!-- DMZ -->
+  <line x1="890" y1="492" x2="890" y2="560" stroke="#7c3aed" stroke-width="3"/>
+  <text x="898" y="530" font-size="13" fill="#6d28d9">port3 · 10.10.20.1</text>
+  <line x1="810" y1="560" x2="1110" y2="560" stroke="#7c3aed" stroke-width="4"/>
+  <text x="1110" y="550" text-anchor="end" font-size="13" font-weight="600" fill="#6d28d9">vmbr2 (DMZ) · 10.10.20.0/24</text>
+
+  <line x1="965" y1="560" x2="965" y2="600" stroke="#7c3aed" stroke-width="3"/>
+  <rect x="820" y="600" width="290" height="140" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="838" y="626" font-size="15" font-weight="700" fill="#0f172a">DMZ01 · VM 103</text>
+  <text x="838" y="648" font-size="13" fill="#334155">Ubuntu Server 26.04 · 10.10.20.10</text>
+  <text x="838" y="670" font-size="13" fill="#334155">Docker Compose:</text>
+  <text x="850" y="690" font-size="13" fill="#334155">• proxy Nginx (TLS)</text>
+  <text x="850" y="708" font-size="13" fill="#334155">• web corporativa</text>
+  <text x="850" y="726" font-size="13" fill="#334155">• Uptime Kuma (estado)</text>
+
+  <!-- Nota Proxmox -->
+  <text x="820" y="790" font-size="12" fill="#64748b">LAN y DMZ: bridges sin IP en Proxmox</text>
+  <text x="820" y="808" font-size="12" fill="#64748b">ni puerto físico. El único camino</text>
+  <text x="820" y="826" font-size="12" fill="#64748b">entre redes es el FortiGate.</text>
+  <text x="820" y="856" font-size="12" fill="#64748b">Snapshots por fase en todas las VMs.</text>
+
+  <!-- Flujos -->
+  <!-- Backup local por SMB -->
+  <path d="M430,395 L394,395" fill="none" stroke="#c2410c" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#aBack)"/>
+  <!-- Réplica a Acronis Cloud -->
+  <path d="M1125,250 L1125,78" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#aBack)"/>
+  <text x="1117" y="140" text-anchor="end" font-size="12" fill="#c2410c">HTTPS 443</text>
+  <!-- Automatización por API -->
+  <path d="M392,320 C470,320 500,430 588,430" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="3 4" marker-end="url(#aApi)"/>
+
+  <!-- Leyenda -->
+  <rect x="60" y="460" width="330" height="270" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="80" y="488" font-size="14" font-weight="700" fill="#0f172a">Leyenda</text>
+  <line x1="80" y1="512" x2="130" y2="512" stroke="#2563eb" stroke-width="4"/>
+  <text x="142" y="517" font-size="13" fill="#334155">WAN (red de casa)</text>
+  <line x1="80" y1="540" x2="130" y2="540" stroke="#16a34a" stroke-width="4"/>
+  <text x="142" y="545" font-size="13" fill="#334155">LAN</text>
+  <line x1="80" y1="568" x2="130" y2="568" stroke="#7c3aed" stroke-width="4"/>
+  <text x="142" y="573" font-size="13" fill="#334155">DMZ</text>
+  <line x1="80" y1="600" x2="130" y2="600" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="142" y="598" font-size="13" fill="#334155">Backups Acronis (3-2-1):</text>
+  <text x="142" y="615" font-size="13" fill="#334155">SMB 445 a F:\ y réplica en la nube</text>
+  <line x1="80" y1="645" x2="130" y2="645" stroke="#475569" stroke-width="2" stroke-dasharray="3 4"/>
+  <text x="142" y="643" font-size="13" fill="#334155">Automatización (Fase 5):</text>
+  <text x="142" y="660" font-size="13" fill="#334155">APIs REST de FortiOS y Proxmox</text>
+  <text x="80" y="695" font-size="12" fill="#64748b">Proxmox es una VM anidada en el PC host;</text>
+  <text x="80" y="713" font-size="12" fill="#64748b">el esquema muestra la vista lógica.</text>
+</svg>
