@@ -40,7 +40,7 @@ Laboratorio que simula la infraestructura de una pyme: firewall perimetral con *
 | 3 | Controlador de dominio Windows Server 2025 | ✅ | [docs/03-controlador-dominio.md](docs/03-controlador-dominio.md) |
 | 4 | Servidor Ubuntu 26.04 con Docker en la DMZ | ✅ | [docs/04-dmz-docker.md](docs/04-dmz-docker.md) |
 | 5 | Automatización con las APIs de FortiGate y Proxmox | ✅ | [docs/05-automatizacion.md](docs/05-automatizacion.md) |
-| 6 | Backup y restauración con Acronis Cyber Protect | ⏳ | — |
+| 6 | Backup y restauración con Acronis Cyber Protect | ✅ | [docs/06-acronis.md](docs/06-acronis.md) |
 
 ## Automatización
 
@@ -50,6 +50,17 @@ Laboratorio que simula la infraestructura de una pyme: firewall perimetral con *
 - **Informe de estado de Proxmox** en Markdown: nodo, VMs (CPU, RAM, disco, uptime y snapshots) y almacenamiento.
 
 Cada API usa un token de mínimo privilegio: usuario REST API limitado a una IP en el FortiGate y rol de solo lectura `PVEAuditor` en Proxmox. Los secretos van en un `.env` que no se sube al repo (plantilla en [`.env.example`](.env.example)). El script solo usa la librería estándar de Python.
+
+## Copias de seguridad
+
+**Acronis Cyber Protect Cloud** protege las VMs de Proxmox **sin agente dentro de ellas**: un único agente en el nodo, regla 3-2-1 y cifrado AES 256.
+
+- **Copia local** en una carpeta SMB de otro disco (usuario de servicio con permisos mínimos y el puerto 445 abierto solo para el nodo).
+- **Réplica inmutable en Acronis Cloud**, con retención GFS.
+- **Dos planes:** uno para DC01 y DMZ01 con snapshots consistentes (QEMU Guest Agent) y otro para el FortiGate, *crash-consistent* porque FortiOS no lleva agente.
+- **Consola protegida** con 2FA y alertas de fallo, aviso y recuperación.
+
+Probado con un desastre real: **DMZ01 destruida (discos y snapshots) y restaurada en 50 s, con la web de nuevo en marcha en menos de 4 minutos**, misma IP y MAC e historial de monitorización intacto. También se recuperó un archivo borrado de la carpeta compartida desde la copia en la nube, con el mismo hash SHA-256.
 
 ## Hardware
 
